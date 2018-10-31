@@ -1,0 +1,1 @@
+ARM Template to be used for Web App deployment, including: App Service Plan, Web App, Configuration settings such as Python Version & Always On ENABLED. Added "sebinego-devops-onprem-python" as Owner in the RG's IAM, for enabling Resource Group Lock.

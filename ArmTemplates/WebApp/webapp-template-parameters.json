@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/depoymentParameters.json",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "webAppName": {
+            "value": "-WebApp"
+        },
+        "appPlanName": {
+            "value": "-ASP"
+        },
+        "skuName": {
+            "value": "S1"
+        },
+        "skuSize": {
+            "value": "S1"
+        },
+        "skuCapacity": {
+            "value": 1
+        },
+        "skuTier": {
+            "value": "Standard"
+        },
+        "skuFamily": {
+            "value": "S"
+        }
+    }
+}
