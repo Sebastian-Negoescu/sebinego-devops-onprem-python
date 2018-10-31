@@ -12,7 +12,7 @@
     },
     "resources": [
         {
-            "name": "[concat('resourceGroup().name', parameters('lockName'))]",
+            "name": "[concat(resourceGroup().name, parameters('lockName'))]",
             "type": "Microsoft.Authorization/locks",
             "apiVersion": "2016-09-01",
             "properties": {
