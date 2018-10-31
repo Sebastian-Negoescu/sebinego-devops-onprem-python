@@ -108,6 +108,7 @@
             "apiVersion": "2016-08-01",
             "location": "[parameters('location')]",
             "dependsOn": [
+                "linkedTemplate",
                 "[resourceId('Microsoft.Web/serverfarms', concat(resourceGroup().name, parameters('appPlanName')))]"
             ],
             "properties":{
@@ -129,6 +130,17 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "linkedTemplate",
+            "apiVersion": "2017-05-10",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink":{
+                    "uri": "https://github.com/Sebastian-Negoescu/sebinego-devops-onprem-python/blob/master/ArmTemplates/WebApp/linkedTemplate.json"
+                }
+            }
         }
     ]
 }
