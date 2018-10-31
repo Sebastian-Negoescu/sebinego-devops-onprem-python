@@ -138,7 +138,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink":{
-                    "uri": "https://raw.githubusercontent.com/Sebastian-Negoescu/sebinego-devops-onprem-python/blob/master/ArmTemplates/WebApp/linkedTemplate.json"
+                    "uri": "https://raw.githubusercontent.com/Sebastian-Negoescu/sebinego-devops-onprem-python/master/ArmTemplates/WebApp/linkedTemplate.json"
                 }
             }
         }
