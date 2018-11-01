@@ -1,1 +1,1 @@
-This is  the ReadMe file of the Project. :)
+This is the ReadMe file of the Project. :)
