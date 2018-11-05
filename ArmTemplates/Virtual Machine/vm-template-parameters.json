@@ -9,7 +9,7 @@
             "value": "10.0.0.0/16"
         },
         "subnetName": { 
-            "value": "Subnet-1"
+            "value": "Subnet1"
         },
         "subnetPrefix": { 
             "value": "10.0.0.0/24"
@@ -18,13 +18,13 @@
             "value": "Dynamic"
         },
         "vnetName": { 
-            "value": "SN-DevOps-VNet"
+            "value": "SNDevOpsVNet"
         },
         "publicIpAddressName": { 
-            "value": "SN-DevOps-IP"
+            "value": "SNDevOpsIP"
         },
         "lbName": { 
-            "value": "SN-DevOps-LB"
+            "value": "SNDevOpsLB"
         },
         "adminUserName": { 
             "value": "sebinego"
@@ -45,7 +45,7 @@
             "value": "Standard_E4s_v3"
         },
         "nicNamePrefix": { 
-            "value": "SN-DevOps-NIC"
+            "value": "SNDevOpsNIC"
         }
     }
 }

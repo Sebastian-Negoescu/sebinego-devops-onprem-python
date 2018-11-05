@@ -68,7 +68,7 @@
         },
         "vmNamePrefix": {
             "type": "string",
-            "defaultValue": "[concat(resourceGroup().id, '-MyDevOpsVM')]",
+            "defaultValue": "MyDevOpsVM",
             "metadata": {
                 "description": "The name of the Virtual Machine."
             }
@@ -145,26 +145,26 @@
         },
         {
             "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2018-08-01",
             "name": "[parameters('nicNamePrefix')]",
+            "apiVersion": "2015-05-01-preview",
             "location": "[resourceGroup().location]",
             "properties": {
                 "ipConfigurations": [
                     {
                         "name": "ipconfig1",
                         "properties": {
-                            "privateIPAddress": "Dynamic",
+                            "privateIPAllocationMethod": "Dynamic",
                             "subnet": {
                                 "id": "[variables('subnetRef')]"
                             },
                             "loadBalancerBackendAddressPools": [
                                 {
-                                    "id": "[concat(variables('lbId'), '/backEndAddressPools/backEndPool1')]"
+                                    "id": "[concat(variables('lbID'), '/backendAddressPools/BackendPool1')]"
                                 }
                             ],
-                            "loadBalancerInboundNatRules":[
+                            "loadBalancerInboundNatRules": [
                                 {
-                                    "id": "[concat(variables('lbId'), '/inboundNatRules/RDP-VM')]"
+                                    "id": "[concat(variables('lbID'),'/inboundNatRules/RDP-VM')]"
                                 }
                             ]
                         }
@@ -172,62 +172,62 @@
                 ]
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
-                "[concat('Microsoft.Network/loadBalancers', parameters('lbName'))]" 
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]",
+                "[concat('Microsoft.Network/loadBalancers/', parameters('lbName'))]"
             ]
         },
         {
             "type": "Microsoft.Network/loadBalancers",
-            "apiVersion": "2018-08-01",
             "name": "[parameters('lbName')]",
+            "apiVersion": "2015-05-01-preview",
             "location": "[resourceGroup().location]",
             "properties": {
-                "frontendIPConfigurations":[
+                "frontendIPConfigurations": [
                     {
                         "name": "LoadBalancerFrontEnd",
                         "properties": {
                             "publicIPAddress": {
-                                "id": "[variables('publicIpAddressId')]"
+                                "id": "[variables('publicIPAddressID')]"
                             }
                         }
                     }
                 ],
-                "backendAddressPools":[
+                "backendAddressPools": [
                     {
-                        "name": "backEndPool1"
+                        "name": "BackendPool1"
                     }
                 ],
                 "inboundNatRules": [
                     {
                         "name": "RDP-VM",
-                        "properties":{
-                            "frontEndIpConfiguration": {
-                                "id": "[variables('frontEndIpConfigId')]"
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[variables('frontEndIPConfigID')]"
                             },
                             "protocol": "tcp",
-                            "frontEndPort": 443,
-                            "backEndPort": 3389,
-                            "enableFloatingIp": false
+                            "frontendPort": 443,
+                            "backendPort": 3389,
+                            "enableFloatingIP": false
                         }
                     }
                 ],
                 "loadBalancingRules": [
                     {
-                        "name": "lbRule",
+                        "name": "LBRule",
                         "properties": {
-                            "frontEndIpConfiguration": {
-                                "id": "[variables('frontEndIpConfigId')]"
+                            "frontendIPConfiguration": {
+                                "id": "[variables('frontEndIPConfigID')]"
                             },
-                            "backEndAddressPool": {
-                                "id": "[variables('lbPoolId')]"
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID')]"
                             },
-                            "protocol": "tcp",
-                            "frontEndPort": 80,
-                            "backEndPort": 80,
-                            "enableFloatingIp": false,
-                            "idleTimeOutInMinutes": 5,
+                            "protocol": "Tcp",
+                            "frontendPort": 80,
+                            "backendPort": 80,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 5,
                             "probe": {
-                                "id": "[variables('lbProbeId')]"
+                                "id": "[variables('lbProbeID')]"
                             }
                         }
                     }
@@ -236,7 +236,7 @@
                     {
                         "name": "tcpProbe",
                         "properties": {
-                            "protocol": "tcp",
+                            "protocol": "Tcp",
                             "port": 80,
                             "intervalInSeconds": 5,
                             "numberOfProbes": 2
@@ -245,21 +245,21 @@
                 ]
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
+                "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]"
             ]
         },
         {
-            "type": "Microsoft.Compute",
-            "apiVersion": "2018-06-01",
+            "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('vmNamePrefix')]",
+            "apiVersion": "2016-04-30-preview",
             "location": "[resourceGroup().location]",
             "properties": {
-                "hardWareProfile": {
+                "hardwareProfile": {
                     "vmSize": "[parameters('vmSize')]"
                 },
                 "osProfile": {
                     "computerName": "[parameters('vmNamePrefix')]",
-                    "adminUserName": "[parameters('adminUserName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]"
                 },
                 "storageProfile": {
@@ -270,7 +270,7 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "creationOption": "FromImage",
+                        "createOption": "FromImage",
                         "managedDisk": {
                             "storageAccountType": "[parameters('storageAccountType')]"
                         }
@@ -285,12 +285,12 @@
                 },
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
-                        "enabled": "false"
+                        "enabled": "False"
                     }
                 }
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces', parameters('nicNamePrefix'))]"
+                "[concat('Microsoft.Network/networkInterfaces/', parameters('nicNamePrefix'))]"
             ]
         }
     ]
