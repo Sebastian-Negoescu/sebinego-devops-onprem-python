@@ -1,0 +1,118 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountType": {
+            "type": "string",
+            "metadata": {
+                "description": "The Storage Account type used for the VM."
+            }
+        },
+        "addressPrefix": {
+            "type":"string",
+            "metadata": {
+                "description": "The Address Prefix to be used for the VM."
+            }
+        },
+        "subnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Subnet Network."
+            }
+        },
+        "subnetPrefix": {
+            "type": "string",
+            "metadata":{
+                "description": "The prefix of the Subnet Address."
+            }
+        },
+        "publicIpAddressType": {
+            "type": "string",
+            "allowedValues": [
+                "Static",
+                "Dynamic"
+            ],
+            "metadata": {
+                "description": "The type of IP to be assigned for the address."
+            }
+        },
+        "vnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the VNet."
+            }
+        },
+        "publicIpAddressName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the IP Address."
+            }
+        },
+        "lbName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Load Balancer."
+            }
+        },
+        "adminUserName": {
+            "type": "string",
+            "metadata": {
+                "description": "The Admin UserName of the VM."
+            }
+        },
+        "adminPassword": {
+            "type": "string",
+            "metadata": {
+                "description": "The Password to be used for the Admin account on the VM."
+            }
+        },
+        "vmNamePrefix": {
+            "type": "string",
+            "defaultValue": "[concat(resourceGroup().id, '-MyDevOpsVM')]",
+            "metadata": {
+                "description": "The name of the Virtual Machine."
+            }
+        },
+        "imagePublisher": {
+            "type": "string",
+            "metadata": {
+                "description": "VM's image publisher; e.g.: MicrosoftWindowsServer."
+            }
+        },
+        "imageOffer": {
+            "type": "string",
+            "metadata": {
+                "description": "VM's image offer; e.g.: WindowsServer."
+            }
+        },
+        "imageSKU": {
+            "type": "string",
+            "metadata": {
+                "description": "VM's image SKU; e.g.: 2016-Datacenter."
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "metadata": {
+                "description": "The size of the Virtual Machine."
+            }
+        },
+        "nicNamePrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "The Network Interface Controller's name."
+            }
+        }        
+    },
+    "variables": {
+        "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
+        "publicIpAddressId": "[resourceId('Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]",
+        "lbId": "[resourceId('Microsoft.Network/loadBalancers', parameters('lbName'))]",
+        "frontEndIpConfigId": "[concat(variables('lbId'), '/frontEndIpConfigurations/loadBalancerFrontEnd')]",
+        "lbPoolId": "[concat(variables('lbId'), '/backEndAddressPools/backEndPool1')]",
+        "lbProbeId": "[concat(variables('lbId'), '/probes/tcpProbe')]"
+    },
+    "resources": [
+        
+    ]
+}

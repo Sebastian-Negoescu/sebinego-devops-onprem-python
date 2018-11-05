@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountType": { 
+            "value": ""
+        },
+        "addressPrefix": { 
+            "value": ""
+        },
+        "subnetName": { 
+            "value": ""
+        },
+        "subnetPrefix": { 
+            "value": ""
+        },
+        "publicIpAddressType": { 
+            "value": ""
+        },
+        "vnetName": { 
+            "value": ""
+        },
+        "publicIpAddressName": { 
+            "value": ""
+        },
+        "lbName": { 
+            "value": ""
+        },
+        "adminUserName": { 
+            "value": ""
+        },
+        "adminPassword": { 
+            "value": ""
+        },
+        "imagePublisher": { 
+            "value": ""
+        },
+        "imageOffer": { 
+            "value": ""
+        },
+        "imageSKU": { 
+            "value": ""
+        },
+        "vmSize": { 
+            "value": ""
+        },
+        "nicNamePrefix": { 
+            "value": ""
+        }
+    }
+}
