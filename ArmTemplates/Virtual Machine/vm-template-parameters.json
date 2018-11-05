@@ -3,49 +3,49 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "storageAccountType": { 
-            "value": ""
+            "value": "Standard_LRS"
         },
         "addressPrefix": { 
-            "value": ""
+            "value": "10.0.0.0/16"
         },
         "subnetName": { 
-            "value": ""
+            "value": "Subnet-1"
         },
         "subnetPrefix": { 
-            "value": ""
+            "value": "10.0.0.0/24"
         },
         "publicIpAddressType": { 
-            "value": ""
+            "value": "Dynamic"
         },
         "vnetName": { 
-            "value": ""
+            "value": "SN-DevOps-VNet"
         },
         "publicIpAddressName": { 
-            "value": ""
+            "value": "SN-DevOps-IP"
         },
         "lbName": { 
-            "value": ""
+            "value": "SN-DevOps-LB"
         },
         "adminUserName": { 
-            "value": ""
+            "value": "sebinego"
         },
         "adminPassword": { 
-            "value": ""
+            "value": "3Microsoft."
         },
         "imagePublisher": { 
-            "value": ""
+            "value": "MicrosoftWindowsDesktop"
         },
         "imageOffer": { 
-            "value": ""
+            "value": "Windows-10"
         },
         "imageSKU": { 
-            "value": ""
+            "value": "rs5-pro"
         },
         "vmSize": { 
-            "value": ""
+            "value": "Standard_E4s_v3"
         },
         "nicNamePrefix": { 
-            "value": ""
+            "value": "SN-DevOps-NIC"
         }
     }
 }

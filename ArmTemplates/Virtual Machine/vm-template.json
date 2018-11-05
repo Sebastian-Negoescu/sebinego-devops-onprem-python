@@ -113,6 +113,185 @@
         "lbProbeId": "[concat(variables('lbId'), '/probes/tcpProbe')]"
     },
     "resources": [
-        
+        {
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2018-08-01",
+            "name": "[parameters('publicIpAddressName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2018-08-01",
+            "name": "[parameters('vnetName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('addressPrefix')]"
+                    ]
+                },
+                "subnets":[
+                    {
+                        "name": "[parameters('subnetName')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnetPrefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-08-01",
+            "name": "[parameters('nicNamePrefix')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(variables('lbId'), '/backEndAddressPools/backEndPool1')]"
+                                }
+                            ],
+                            "loadBalancerInboundNatRules":[
+                                {
+                                    "id": "[concat(variables('lbId'), '/inboundNatRules/RDP-VM')]"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+                "[concat('Microsoft.Network/loadBalancers', parameters('lbName'))]" 
+            ]
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers",
+            "apiVersion": "2018-08-01",
+            "name": "[parameters('lbName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "frontendIPConfigurations":[
+                    {
+                        "name": "LoadBalancerFrontEnd",
+                        "properties": {
+                            "publicIPAddress": {
+                                "id": "[variables('publicIpAddressId')]"
+                            }
+                        }
+                    }
+                ],
+                "backendAddressPools":[
+                    {
+                        "name": "backEndPool1"
+                    }
+                ],
+                "inboundNatRules": [
+                    {
+                        "name": "RDP-VM",
+                        "properties":{
+                            "frontEndIpConfiguration": {
+                                "id": "[variables('frontEndIpConfigId')]"
+                            },
+                            "protocol": "tcp",
+                            "frontEndPort": 443,
+                            "backEndPort": 3389,
+                            "enableFloatingIp": false
+                        }
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "lbRule",
+                        "properties": {
+                            "frontEndIpConfiguration": {
+                                "id": "[variables('frontEndIpConfigId')]"
+                            },
+                            "backEndAddressPool": {
+                                "id": "[variables('lbPoolId')]"
+                            },
+                            "protocol": "tcp",
+                            "frontEndPort": 80,
+                            "backEndPort": 80,
+                            "enableFloatingIp": false,
+                            "idleTimeOutInMinutes": 5,
+                            "probe": {
+                                "id": "[variables('lbProbeId')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "tcpProbe",
+                        "properties": {
+                            "protocol": "tcp",
+                            "port": 80,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Compute",
+            "apiVersion": "2018-06-01",
+            "name": "[parameters('vmNamePrefix')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "hardWareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('vmNamePrefix')]",
+                    "adminUserName": "[parameters('adminUserName')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[parameters('imagePublisher')]",
+                        "offer": "[parameters('imageOffer')]",
+                        "sku": "[parameters('imageSKU')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "creationOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "[parameters('storageAccountType')]"
+                        }
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nicNamePrefix'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": "false"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces', parameters('nicNamePrefix'))]"
+            ]
+        }
     ]
 }
