@@ -39,7 +39,7 @@
             "value": "Windows-10"
         },
         "imageSKU": { 
-            "value": "rs5-pro"
+            "value": "rs4-pro"
         },
         "vmSize": { 
             "value": "Standard_E4s_v3"
