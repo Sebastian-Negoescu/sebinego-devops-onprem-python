@@ -1,7 +1,7 @@
 # Azure DevOps
 # @Sebi N.
 # The template to be used when deploying the Application using the ARM Template & ARM Template Parameters Files
-# Irrelevant for now...! :)
+# Irrelevant for now... But will use it with future progress.
 
 Login-AzureRmAccount
 
